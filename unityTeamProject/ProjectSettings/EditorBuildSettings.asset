@@ -6,8 +6,23 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/SampleScene.unity
+    path: Assets/Scenes/stage1.unity
+    guid: 20018d0163e56ba4cacfb3d162cd6df0
+  - enabled: 1
+    path: Assets/Scenes/Map.unity
+    guid: f557f5bfd76adf9429d1bfcba3843e3f
+  - enabled: 1
+    path: Assets/Scenes/labScene.unity
     guid: 99c9720ab356a0642a771bea13969a05
+  - enabled: 1
+    path: Assets/Scenes/RestaurantScene.unity
+    guid: 2f10b80a9734b4b449beb5c0bffbf160
+  - enabled: 1
+    path: Assets/Scenes/ufo.unity
+    guid: c0c8dc84d47062843b1da0d03964b6be
+  - enabled: 1
+    path: Assets/Scenes/EndingScene.unity
+    guid: d0cedb66e55aa2045a51c9b2e120f809
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0
