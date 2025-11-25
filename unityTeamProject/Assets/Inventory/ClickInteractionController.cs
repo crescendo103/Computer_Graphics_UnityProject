@@ -24,7 +24,7 @@ public class ClickInteractionController : MonoBehaviour
 
         Vector2 mousePos = Mouse.current.position.ReadValue();
 
-        //  2. 어떤 카메라를 쓸지 결정하는 로직 (수정된 부분)
+        // 2. 어떤 카메라를 쓸지 결정하는 로직
         // 기본은 메인 카메라를 쓰되...
         Camera activeCamera = mainCamera;
 
@@ -34,7 +34,7 @@ public class ClickInteractionController : MonoBehaviour
             activeCamera = detailCamera;
         }
 
-        //  3. mainCamera 대신 activeCamera 사용
+        // 3. mainCamera 대신 activeCamera 사용
         Ray ray = activeCamera.ScreenPointToRay(mousePos);
 
         if (Physics.Raycast(ray, out RaycastHit hit, maxDistance))
@@ -55,7 +55,15 @@ public class ClickInteractionController : MonoBehaviour
                 return;
             }
 
-            // 3. [범용] ItemInteractable
+            // 3. [손전등 힌트] FlashlightHint (추가된 기능)
+            var hint = hit.collider.GetComponent<FlashlightHint>();
+            if (hint != null)
+            {
+                hint.TryShowHint(inventory);
+                return;
+            }
+
+            // 4. [범용] ItemInteractable
             var interactable = hit.collider.GetComponent<ItemInteractable>();
             if (interactable != null)
             {
