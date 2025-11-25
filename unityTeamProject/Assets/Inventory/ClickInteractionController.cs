@@ -4,7 +4,7 @@ using UnityEngine.InputSystem;
 public class ClickInteractionController : MonoBehaviour
 {
     [SerializeField] private Camera mainCamera;
-    [SerializeField] private Camera detailCamera; // 1. 디테일 카메라 변수 추가
+    [SerializeField] private Camera detailCamera;
 
     [SerializeField] private float maxDistance = 100f;
     [SerializeField] private Inventory inventory;
@@ -24,7 +24,7 @@ public class ClickInteractionController : MonoBehaviour
 
         Vector2 mousePos = Mouse.current.position.ReadValue();
 
-        // 2. 어떤 카메라를 쓸지 결정하는 로직
+        // 어떤 카메라를 쓸지 결정하는 로직 
         // 기본은 메인 카메라를 쓰되...
         Camera activeCamera = mainCamera;
 
@@ -34,14 +34,15 @@ public class ClickInteractionController : MonoBehaviour
             activeCamera = detailCamera;
         }
 
-        // 3. mainCamera 대신 activeCamera 사용
+        // 3. activeCamera를 사용하여 Ray 발사
         Ray ray = activeCamera.ScreenPointToRay(mousePos);
 
         if (Physics.Raycast(ray, out RaycastHit hit, maxDistance))
         {
             // 1. [줍기] WorldItemPickup
             var pickup = hit.collider.GetComponent<WorldItemPickup>();
-            if (pickup != null)
+            // pickup이 존재하고(&&) 컴포넌트가 켜져있을 때(.enabled)만 실행
+            if (pickup != null && pickup.enabled)
             {
                 pickup.OnClicked(inventory);
                 return;
@@ -49,7 +50,8 @@ public class ClickInteractionController : MonoBehaviour
 
             // 2. [이벤트] ItemTrigger
             var trigger = hit.collider.GetComponent<ItemTrigger>();
-            if (trigger != null)
+            // trigger가 존재하고(&&) 컴포넌트가 켜져있을 때(.enabled)만 실행
+            if (trigger != null && trigger.enabled)
             {
                 trigger.TryTrigger(inventory);
                 return;
@@ -57,7 +59,8 @@ public class ClickInteractionController : MonoBehaviour
 
             // 3. [손전등 힌트] FlashlightHint (추가된 기능)
             var hint = hit.collider.GetComponent<FlashlightHint>();
-            if (hint != null)
+            // hint가 존재하고(&&) 컴포넌트가 켜져있을 때(.enabled)만 실행
+            if (hint != null && hint.enabled)
             {
                 hint.TryShowHint(inventory);
                 return;
@@ -65,7 +68,8 @@ public class ClickInteractionController : MonoBehaviour
 
             // 4. [범용] ItemInteractable
             var interactable = hit.collider.GetComponent<ItemInteractable>();
-            if (interactable != null)
+            // interactable이 존재하고(&&) 컴포넌트가 켜져있을 때(.enabled)만 실행
+            if (interactable != null && interactable.enabled)
             {
                 interactable.TryInteract(inventory);
                 return;
