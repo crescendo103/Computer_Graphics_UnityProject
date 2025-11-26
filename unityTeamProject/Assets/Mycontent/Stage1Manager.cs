@@ -1,6 +1,7 @@
+using System.Collections;
 using TMPro;
 using UnityEngine;
-using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class Stage1Manager : MonoBehaviour
 {
@@ -31,6 +32,11 @@ public class Stage1Manager : MonoBehaviour
         {
             Instance = this;
             DontDestroyOnLoad(gameObject); // 씬이 바뀌어도 유지하고 싶으면 사용
+
+
+            // 씬 로드 이벤트 등록
+            SceneManager.sceneLoaded += OnSceneLoaded;
+
         }
         else
         {
@@ -47,6 +53,40 @@ public class Stage1Manager : MonoBehaviour
 
     }
 
+    void OnDestroy()
+    {
+        // 이벤트 해제
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    // 씬 로드 시 호출
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        UpdateReferences();
+    }
+
+    // 씬 내 오브젝트 재참조
+    private void UpdateReferences()
+    {
+        //mainCamera = Camera.main;
+        // 이름으로 카메라 찾기
+        GameObject camObj = GameObject.Find("MainCamera");
+        if (camObj != null)
+        {
+            mainCamera = camObj.GetComponent<Camera>();
+            if (mainCamera == null)
+                Debug.LogError("MainCamera 오브젝트는 찾았지만 Camera 컴포넌트가 없음!");
+        }
+        //AxeObject = GameObject.Find("AxeObject");
+        //Padlock = GameObject.Find("Padlock");
+        //BoxCover = GameObject.Find("BoxCover");
+        //Bottle = GameObject.Find("Bottle");
+        //Water = GameObject.Find("Water");
+        //DoorLock = GameObject.Find("DoorLock");
+        //Component1 = GameObject.Find("Component1");
+        Gate = GameObject.Find("DoorManager");
+    }
+
     // Update is called once per frame
     void Update()
     {
@@ -59,10 +99,14 @@ public class Stage1Manager : MonoBehaviour
             }
                 
             Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
+            Debug.Log($"Ray origin: {ray.origin}, direction: {ray.direction}");
+
             RaycastHit hit;
 
             if (Physics.Raycast(ray, out hit))
             {
+                Debug.Log($"Hit object: {hit.collider.gameObject.name}");
+
                 //  targetObject 클릭한 경우
                 if (hit.collider.gameObject == AxeObject)
                 {
@@ -125,6 +169,8 @@ public class Stage1Manager : MonoBehaviour
                     Destroy(Component1);
                 }else if(hit.collider.gameObject == Gate)
                 {
+
+                    Debug.Log("Gate");
                     DoorGate gateScript = hit.collider.gameObject.GetComponent<DoorGate>();//스크립트 가져오기
                     if (!doorgateflipflop)
                     {
