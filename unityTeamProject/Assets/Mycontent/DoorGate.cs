@@ -23,10 +23,24 @@ public class DoorGate : MonoBehaviour
     Coroutine runningL;//중복실행을 막기 위해
     Coroutine runningR;
 
-    private bool isopen = false;
+    private static bool isopen = false;
+    /*
+    public static DoorGate Instance;
 
-
-    
+    void Awake()
+    {
+        // 싱글톤 생성
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);    // 씬 이동해도 유지
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
+    */
     public void Open()
     {
         if (runningL != null)
@@ -97,15 +111,12 @@ public class DoorGate : MonoBehaviour
         leftdoor.transform.localPosition = target;
         
         runningL = null;
-        if (!isopen)
-        {
-            isopen = true;
-            SceneManager.LoadScene("Map");
-        }
-        else
-        {
-            isopen = false;
-        }
+
+       
+            
+        SceneManager.LoadScene("Map");
+        
+        
             
     }
 
@@ -113,5 +124,11 @@ public class DoorGate : MonoBehaviour
     {
         Debug.Log("충돌체 시작");
         GetComponent<BoxCollider>().enabled = true;
+    }
+
+    public void ColliderOff()
+    {
+        Debug.Log("충돌체 제거");
+        GetComponent<BoxCollider>().enabled = false;
     }
 }

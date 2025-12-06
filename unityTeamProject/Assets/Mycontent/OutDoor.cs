@@ -67,6 +67,9 @@ public class OutDoor : MonoBehaviour
         //originalPosition = new Vector3(6.80999994f, -0.512000024f, -4.79799986f);
         PasswordImage = new List<Image> { p1, p2, p3, p4 };
         lastonetwo = true;
+
+        DoorGate script = doorgate.GetComponent<DoorGate>();
+        script.ColliderOff();
     }
 
     public void pressPassword(GameObject gameObject)
