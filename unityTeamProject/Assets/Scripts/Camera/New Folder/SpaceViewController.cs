@@ -26,17 +26,6 @@ public class SpaceViewController : MonoBehaviour
         }
     }
 
-    private void Update()
-    {
-        if (!isViewing) return;
-
-        // 확대 상태에서 아무 클릭 → 복귀
-        if (Mouse.current.leftButton.wasPressedThisFrame)
-        {
-            ExitView();
-        }
-    }
-
     private void ExitView()
     {
         isViewing = false;
